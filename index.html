@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turing Machine Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="hero card reveal">
+      <h1>Turing Machine Visualizer</h1>
+    </header>
+
+    <section class="layout">
+      <aside class="panel card reveal" style="--delay: 100ms">
+        <h2>Machine Setup</h2>
+        <div class="field-grid">
+          <label>
+            Initial State
+            <input id="initialState" value="q0" />
+          </label>
+          <label>
+            Accept States (comma)
+            <input id="acceptStates" value="q_accept" />
+          </label>
+          <label>
+            Reject States (comma)
+            <input id="rejectStates" value="q_reject" />
+          </label>
+          <label>
+            Blank Symbol
+            <input id="blankSymbol" value="_" maxlength="1" />
+          </label>
+          <label class="span-2">
+            Input String
+            <input id="inputString" value="1011" placeholder="e.g. 1011 or abba" />
+          </label>
+        </div>
+        <div class="setup-actions">
+          <button id="loadSampleBtn" class="ghost">Load Sample Rules</button>
+          <button id="initializeBtn">Initialize Machine</button>
+        </div>
+      </aside>
+
+      <section class="panel card reveal" style="--delay: 200ms">
+        <div class="panel-head">
+          <h2>Transition Rules</h2>
+          <button id="addRuleBtn" class="ghost">Add Rule</button>
+        </div>
+        <p class="hint">Format: (state, read) -> (write, move, next). Moves: L, R.</p>
+        <div class="table-wrap">
+          <table id="transitionTable">
+            <thead>
+              <tr>
+                <th>Current State</th>
+                <th>Read</th>
+                <th>Write</th>
+                <th>Move</th>
+                <th>Next State</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel card reveal" style="--delay: 280ms">
+      <div class="panel-head">
+        <h2>Execution</h2>
+        <div id="statusPill" class="status status-idle">Idle</div>
+      </div>
+
+      <div class="controls">
+        <button id="stepBtn">Step</button>
+        <button id="runBtn">Run</button>
+        <button id="pauseBtn" class="ghost">Pause</button>
+        <button id="resetBtn" class="ghost">Reset</button>
+        <label class="speed-wrap">
+          Speed
+          <input type="range" id="speedSlider" min="100" max="1000" step="100" value="400" />
+        </label>
+      </div>
+
+      <div class="machine-meta">
+        <div><span class="meta-label">Current State:</span> <strong id="currentStateLabel">-</strong></div>
+        <div><span class="meta-label">Head Position:</span> <strong id="headPositionLabel">-</strong></div>
+        <div><span class="meta-label">Steps:</span> <strong id="stepsLabel">0</strong></div>
+      </div>
+
+      <div class="tape-container" id="tapeContainer" aria-live="polite"></div>
+
+      <h3>Transition Log</h3>
+      <ol id="logList" class="log-list"></ol>
+    </section>
+  </main>
+
+  <template id="ruleRowTemplate">
+    <tr>
+      <td><input class="rule-current" placeholder="q0" /></td>
+      <td><input class="rule-read" maxlength="1" placeholder="0" /></td>
+      <td><input class="rule-write" maxlength="1" placeholder="1" /></td>
+      <td>
+        <select class="rule-move">
+          <option value="R">R</option>
+          <option value="L">L</option>
+        </select>
+      </td>
+      <td><input class="rule-next" placeholder="q1" /></td>
+      <td><button class="danger remove-rule" type="button">Delete</button></td>
+    </tr>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
